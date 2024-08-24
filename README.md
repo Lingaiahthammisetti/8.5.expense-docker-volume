@@ -1,1 +1,1 @@
-# expense-docker
+# expense-docker-compose

@@ -1,27 +1,33 @@
 #!/bin/bash
-
 USERID=$(id -u)
 TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+N="\e[0m"
+echo  -e "$G Script started executing at:$TIMESTAMP $N"
+
 VALIDATE(){
-    if [ $1 -ne 0 ]
-    then 
-       echo "$2...FAILURE"
-       exit 1
-    else
-       echo "$2.. SUCCESS"
-    fi    
-}
-#check whether root user or not.
-if [ $USERID -ne 0 ]
+if [ $1 -ne 0 ]
 then 
-   echo "please run this script with root access."
-   exit 1 #manaully exit if error comes.
+   echo -e "$R $2... FAITURE $N"
+   exit 1
 else
-   echo "you are super user."
+   echo -e "$G $2..  SUCCESS $N"
 fi
+}
+#checking root user or not.
+if [ $USERID -ne 0 ]
+then
+   echo -e "$R Please run this script with root access $N"
+   exit 1
+else
+   echo -e "$G You are super user. $SCRIPT_NAME"
+
+fi 
 
 yum install yum-utils -y &>>$LOGFILE
 VALIDATE $? "Installing utils packages"
@@ -41,5 +47,23 @@ VALIDATE $? "Enabling Docker"
 usermod -aG docker ec2-user &>>$LOGFILE
 VALIDATE $? "Adding ec2-user to docker group as secondary group"
 
-echo -e "$R Logout and login again $N"
+echo -e "$G Logout and login again $N"
 
+echo "******* Resize EBS Storage ********8"
+lsblk &>>$LOGFILE
+VALIDATE $? "check the partitions"
+
+sudo growpart /dev/nvme0n1 4 &>>$LOGFILE
+VALIDATE $? "growpart to resize the existing partition to fill the available space"
+
+sudo lvextend -l +50%FREE /dev/RootVG/rootVol &>>$LOGFILE
+VALIDATE $? "Extend the Logical Volumes Decide how much space to allocate to each logical volume."
+
+sudo lvextend -l +50%FREE /dev/RootVG/varVol &>>$LOGFILE
+VALIDATE $? "Extend the Logical Volumes Decide how much space to allocate to each logical volume.-2"
+
+sudo xfs_growfs / &>>$LOGFILE
+VALIDATE $? "For the root filesystem:"
+
+sudo xfs_growfs /var &>>$LOGFILE
+VALIDATE $? "For the /var filesystem:"
