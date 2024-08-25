@@ -17,10 +17,11 @@ RUN mkdir -p /var/cache/nginx/client_temp && \
         mkdir -p /var/cache/nginx/fastcgi_temp && \
         mkdir -p /var/cache/nginx/uwsgi_temp && \
         mkdir -p /var/cache/nginx/scgi_temp && \
+       
         mkdir -R nginx:nginx /var/cache/nginx && \
-        mkdir -R nginx:nginx /etc/nginx && \
-        mkdir -R 755 /etc/nginx && \
-        mkdir -R nginx:nginx /var/log/nginx && \
+        mkdir -R nginx:nginx /etc/nginx/ && \
+        mkdir -R 755 /etc/nginx/ && \
+        mkdir -R nginx:nginx /var/log/nginx 
 RUN touch /var/run/nginx.pid && \
     chown -R nginx:nginx /var/run/nginx.pid /run/nginx.pid
 
