@@ -30,7 +30,6 @@ services:
     - mysql
   frontend:
     image: frontend:v1.0.0
-    
     #image: lingadevops/frontend:v1.0
     container_name: frontend
     depends_on:
