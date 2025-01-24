@@ -17,7 +17,7 @@ ENV MYSQL_ROOT_PASSWORD=ExpenseApp@1 \
     MYSQL_DATABASE=transactions 
 RUN chown -R expense:expense /var/lib/mysql /var/run/mysqld
 COPY scripts/*.sql /docker-entrypoint-initdb.d/
-#USER expense
+#USER expense #removed for k8s-expense-volumes project.
 
 # we have created network called 
 #$docker network create expense
