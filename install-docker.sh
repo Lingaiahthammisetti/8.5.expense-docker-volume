@@ -58,20 +58,20 @@ echo "******* Resize EBS Storage ****************"
 # allow-everything
 # 50 GB
 
-# lsblk &>>$LOGFILE
-# VALIDATE $? "check the partitions"
+lsblk &>>$LOGFILE
+VALIDATE $? "check the partitions"
 
-# sudo growpart /dev/nvme0n1 4 &>>$LOGFILE #t3.micro used only
-# VALIDATE $? "growpart to resize the existing partition to fill the available space"
+sudo growpart /dev/nvme0n1 4 &>>$LOGFILE #t3.micro used only
+VALIDATE $? "growpart to resize the existing partition to fill the available space"
 
-# sudo lvextend -l +50%FREE /dev/RootVG/rootVol &>>$LOGFILE
-# VALIDATE $? "Extend the Logical Volumes Decide how much space to allocate to each logical volume."
+sudo lvextend -l +50%FREE /dev/RootVG/rootVol &>>$LOGFILE
+VALIDATE $? "Extend the Logical Volumes Decide how much space to allocate to each logical volume."
 
-# sudo lvextend -l +50%FREE /dev/RootVG/varVol &>>$LOGFILE
-# VALIDATE $? "Extend the Logical Volumes Decide how much space to allocate to each logical volume.-2"
+sudo lvextend -l +50%FREE /dev/RootVG/varVol &>>$LOGFILE
+VALIDATE $? "Extend the Logical Volumes Decide how much space to allocate to each logical volume.-2"
 
-# sudo xfs_growfs / &>>$LOGFILE
-# VALIDATE $? "For the root filesystem:"
+sudo xfs_growfs / &>>$LOGFILE
+VALIDATE $? "For the root filesystem:"
 
-# sudo xfs_growfs /var &>>$LOGFILE
-# VALIDATE $? "For the /var filesystem:"
+sudo xfs_growfs /var &>>$LOGFILE
+VALIDATE $? "For the /var filesystem:"

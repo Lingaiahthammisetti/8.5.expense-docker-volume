@@ -10,12 +10,7 @@ services:
   mysql:
     #image: mysql:v1.0.0
     image: lingadevops/mysql:v1.0
-    container_name: mysql
-    # environment:
-    #    - MYSQL_ROOT_PASSWORD=ExpenseApp@1
-    #    - MYSQL_USER=expense
-    #    - MYSQL_PASSWORD=ExpenseApp@1
-    #    - MYSQL_DATABASE=transactions
+    container_name: mysql 
     volumes:
     - source: mysql
       target: /var/lib/mysql
