@@ -1,3 +1,6 @@
+* This repository created for expense project can executed with docker compose command along with volumes attached to db servers.
+
+
 # Installing Roboshop Docker:
 * creating docker images
 ```
